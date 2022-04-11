@@ -20,7 +20,7 @@ def get_streamreader(uri, universal_newlines=True, newline='',open_mode='r'):
     print(uri)
     if uri.startswith('http'):
         import wget
-        new_uri = "tempfile." + uri.split('.')[-1].replace('/', '')
+        new_uri = "file:///tempfile." + uri.split('.')[-1].replace('/', '')
         wget.download(uri, new_uri)
         uri = new_uri
     streamreader = smart_open.open(uri, open_mode, newline=newline, errors='surrogateescape')
