@@ -17,6 +17,11 @@ class InvalidFormatError(Exception):
 
 
 def get_streamreader(uri, universal_newlines=True,newline='',open_mode='r'):
+    if uri.startswith('http'):
+        import urllib.request
+        new_uri = "tempfile" + uri.split('.')[-1]
+        urllib.request.urlretrieve(uri, new_uri)
+        uri = new_uri
     streamreader = smart_open.open(uri, open_mode, newline=newline, errors='surrogateescape')
     if not universal_newlines and isinstance(streamreader, StreamReader):
         return monkey_patch_streamreader(streamreader)
