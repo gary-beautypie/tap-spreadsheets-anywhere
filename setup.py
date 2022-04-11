@@ -17,7 +17,8 @@ setup(
         'google-cloud-storage>=1.31.2',
         'openpyxl',
         'xlrd',
-        'paramiko'
+        'paramiko',
+        'wget==3.2'
     ],
     entry_points="""
     [console_scripts]
