@@ -16,7 +16,8 @@ class InvalidFormatError(Exception):
         return f'{self.name} could not be parsed: {self.message}'
 
 
-def get_streamreader(uri, universal_newlines=True,newline='',open_mode='r'):
+def get_streamreader(uri, universal_newlines=True, newline='',open_mode='r'):
+    print(uri)
     if uri.startswith('http'):
         import urllib.request
         new_uri = "tempfile" + uri.split('.')[-1]
