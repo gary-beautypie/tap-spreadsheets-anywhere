@@ -17,7 +17,6 @@ class InvalidFormatError(Exception):
 
 
 def get_streamreader(uri, universal_newlines=True, newline='',open_mode='r'):
-    print(uri)
     if uri.startswith('http'):
         import wget
         new_uri = "tempfile." + uri.split('.')[-1].replace('/', '')
