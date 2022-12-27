@@ -1,6 +1,4 @@
-import cgi
 import re
-from urllib.parse import unquote
 
 import pytz
 from datetime import datetime, timezone
@@ -8,7 +6,6 @@ from datetime import datetime, timezone
 import dateutil
 import requests
 import singer
-from singer.transform import Transformer
 import boto3
 from google.cloud import storage
 import os, logging
@@ -16,7 +13,6 @@ from os import walk
 import tap_spreadsheets_anywhere.format_handler
 import tap_spreadsheets_anywhere.conversion as conversion
 import smart_open.ssh as ssh_transport
-from dateutil.parser import parse as parsedate
 
 LOGGER = logging.getLogger(__name__)
 
@@ -225,7 +221,7 @@ def list_files_in_local_bucket(bucket, search_prefix=None):
     for (dirpath, dirnames, filenames) in walk(path):
         for filename in filenames:
             abspath = os.path.join(dirpath,filename)
-            relpath = os.path.split(abspath)[1]
+            relpath = os.path.relpath(abspath, path)
             local_filenames.append(relpath)
         if len(local_filenames) > max_results:
             raise ValueError(f"Read more than {max_results} records from the path {path}. Use a more specific "
@@ -320,6 +316,7 @@ def config_by_crawl(crawl_config):
                         "max_sampling_read": source.get('max_sampling_read', 1000),
                         "universal_newlines": source.get('universal_newlines', True),
                         "prefer_number_vs_integer": source.get('prefer_number_vs_integer', False),
+                        "prefer_schema_as_string": source.get('prefer_schema_as_string', False),
                         "start_date": modified_since.isoformat()
                     }
                 elif abs_pattern != entries[table]["pattern"]:
@@ -340,6 +337,7 @@ def config_by_crawl(crawl_config):
                             "max_sampling_read": source.get('max_sampling_read', 1000),
                             "universal_newlines": source.get('universal_newlines', True),
                             "prefer_number_vs_integer": source.get('prefer_number_vs_integer', False),
+                            "prefer_schema_as_string": source.get('prefer_schema_as_string', False),
                             "start_date": modified_since.isoformat()
                         }
 

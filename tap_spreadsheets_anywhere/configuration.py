@@ -12,7 +12,7 @@ CONFIG_CONTRACT = Schema({
         Required('pattern'): str,
         Required('start_date'): str,
         Required('key_properties'): [str],
-        Required('format'): Any('csv', 'excel', 'json', 'detect'),
+        Required('format'): Any('csv', 'excel', 'json', 'jsonl', 'detect'),
         Optional('invalid_format_action'): Any('ignore','fail'),
         Optional('universal_newlines'): bool,
         Optional('selected'): bool,
@@ -27,6 +27,7 @@ CONFIG_CONTRACT = Schema({
         Optional('max_records_per_run'): int,
         Optional('max_sampled_files'): int,
         Optional('prefer_number_vs_integer'): bool,
+        Optional('prefer_schema_as_string'): bool,
         Optional('schema_overrides'): {
             str: {
                 Required('type'): Any(Any('null','string','integer','number','date-time'),
